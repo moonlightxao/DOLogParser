@@ -1,0 +1,15 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: parser-consumer-logReader8001
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+
+file:
+  upload-dir: D:\MyDownloads\javaee\DOLogParser\parser-consumer-logReader8001\src\main\resources\logs\
