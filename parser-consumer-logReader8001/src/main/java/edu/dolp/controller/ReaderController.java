@@ -4,10 +4,13 @@ import cn.hutool.core.io.file.FileReader;
 import edu.dolp.entity.FileEntity;
 import edu.dolp.entity.FileTransQueue;
 import edu.dolp.entity.LogEntity;
+import edu.dolp.service.MQService;
 import edu.dolp.service.ParserService;
 import edu.dolp.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.List;
 public class ReaderController {
     @Resource
     private ParserService service;
+
+    @Resource
+    private MQService mqService;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -42,4 +48,12 @@ public class ReaderController {
         }
         return service.parse(new LogEntity(entity.getNamespace(), files));
     }
+
+
+    @GetMapping("/consumer/MQTest")
+    public String test(@RequestParam("topic") String topic, @RequestParam("mes") String mes){
+        return mqService.test(topic, mes);
+    }
+
+
 }

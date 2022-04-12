@@ -24,6 +24,11 @@ public class Template extends TemplateEntity implements TemplateService {
         vc = VectorUtil.arrayToVector(wordLens, true);
     }
 
+    public Template(LogMesEntity entity){
+        this(entity, null);
+    }
+
+
     @Override
     public double getSimilarityScore(LogMesEntity message) {
         String[] splitNewMessage = message.getLogStr();

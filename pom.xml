@@ -13,6 +13,7 @@
         <module>parser-provider-logParser9001</module>
         <module>parser-common-api</module>
         <module>parser-data-logDatabase</module>
+        <module>parser-data-mq</module>
     </modules>
     <packaging>pom</packaging>
 

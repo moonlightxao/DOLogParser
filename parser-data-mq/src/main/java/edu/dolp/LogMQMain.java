@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class LogParser9001Main {
+public class LogMQMain {
     public static void main(String[] args) {
-        SpringApplication.run(LogParser9001Main.class, args);
+        SpringApplication.run(LogMQMain.class, args);
     }
 }

@@ -26,22 +26,22 @@ public class ManageServiceImpl implements ManageService {
     @Override
     public void inferTemplate(LogMesEntity log) {
         int len = log.getLogStr().length;
-        Queue<Pair<Integer, Double>> candidates = new PriorityQueue<>((o1, o2) -> Double.compare(o2.getValue(), o1.getValue()));
+        Queue<Pair<Template, Double>> candidates = new PriorityQueue<>((o1, o2) -> Double.compare(o2.getValue(), o1.getValue()));
         for(Template template: templates){
             if(template.getSplitTemplate().length != len){
                 continue;
             }
             double score = template.getSimilarityScore(log);
             if(Double.compare(score, 0.9d) < 0) continue;
-            candidates.offer(new Pair(template.getId(), score));
+            candidates.offer(new Pair(template, score));
         }
         if(!candidates.isEmpty()){
-            int idx = candidates.peek().getKey();
-            Template template = templates.get(idx);
+            Template template = candidates.peek().getKey();
             template.update(log);
+        }else{
+            Template nTemplate = new Template(log);
+            templates.add(nTemplate);
         }
-        Template nTemplate = new Template(log, templates.size());
-        templates.add(nTemplate);
     }
 
 

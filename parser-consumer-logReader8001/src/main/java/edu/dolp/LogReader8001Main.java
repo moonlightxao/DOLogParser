@@ -12,6 +12,5 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class LogReader8001Main {
     public static void main(String[] args) {
         SpringApplication.run(LogReader8001Main.class,args);
-
     }
 }

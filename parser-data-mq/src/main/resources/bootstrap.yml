@@ -1,0 +1,13 @@
+server:
+  port: 9200
+
+spring:
+  application:
+    name: parser-data-mq
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+rocketmq:
+  name-server: 192.168.23.130:9876
+  producer:
+    group: test-group
