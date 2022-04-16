@@ -8,4 +8,8 @@ spring:
   application:
     name: parser-provider-logParser
 
+rocketmq:
+  name-server: 192.168.23.131:9876
+  producer:
+    group: parser-group
 

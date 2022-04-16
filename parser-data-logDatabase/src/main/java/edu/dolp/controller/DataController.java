@@ -7,12 +7,11 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import edu.dolp.entity.Template;
+import edu.dolp.entity.Visit;
 import edu.dolp.mapper.TemplateMapper;
+import edu.dolp.mapper.VisitMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,6 +20,9 @@ import java.util.List;
 public class DataController {
     @Resource
     private TemplateMapper templateMapper;
+
+    @Resource
+    private VisitMapper visitMapper;
 
     @GetMapping("/data/queryByNamespace")
     public String queryByNamespace(@RequestParam("namespace") String namespace){
@@ -45,8 +47,8 @@ public class DataController {
     * @Author: Liu ZhiTian
     * @Date: 2022/4/7
     */
-    @GetMapping("/data/updateTemplates")
-    public String updateTemplates(@RequestParam("templates") String arg){
+    @RequestMapping("/data/updateTemplates")
+    public String updateTemplates(@RequestBody String arg){
         JSONObject obj = JSONUtil.parseObj(arg);
         JSONObject result = new JSONObject();
         String namespace = obj.getStr("namespace");
@@ -72,6 +74,20 @@ public class DataController {
             }
         }
         return result.toStringPretty();
+    }
+
+    @GetMapping("/data/updateVisit")
+    public String updateVisit(@RequestParam("namespace") String namespace){
+        JSONObject obj = new JSONObject();
+        Visit visit = visitMapper.selectById(namespace);
+        obj.put("visit", visit);
+        Integer rows = visitMapper.update(null, new UpdateWrapper<Visit>().eq("namespace", namespace).set("count", visit.getCount() + 1));
+        if(rows > 0){
+            obj.put("status", 200);
+        }else{
+            obj.put("status", 500);
+        }
+        return obj.toStringPretty();
     }
 
 }

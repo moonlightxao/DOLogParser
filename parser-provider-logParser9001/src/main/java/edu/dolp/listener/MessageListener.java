@@ -1,29 +1,26 @@
-package edu.dolp.controller;
+package edu.dolp.listener;
 
-import cn.hutool.core.lang.Dict;
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import edu.dolp.entity.LogEntity;
 import edu.dolp.entity.LogMesEntity;
-import edu.dolp.entity.TemplateEntity;
 import edu.dolp.service.DataService;
 import edu.dolp.service.MQService;
 import edu.dolp.service.ManageService;
-import edu.dolp.service.TemplateService;
 import edu.dolp.service.impl.ManageServiceImpl;
 import edu.dolp.service.impl.Template;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
+import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-public class ParseController {
+@Component
+@RocketMQMessageListener(topic = "upload-topic", consumerGroup = "upload-group")
+public class MessageListener implements RocketMQListener<LogEntity> {
     private ManageService service = new ManageServiceImpl();
     @Resource
     private DataService dataService;
@@ -31,8 +28,8 @@ public class ParseController {
     @Resource
     private MQService mqService;
 
-    @RequestMapping("/provider/parse")
-    public String parse(@RequestBody LogEntity message){
+    @Override
+    public void onMessage(LogEntity message) {
         JSONObject obj = new JSONObject();
         JSONObject templatesFromDB;
         List<Template> templates = new ArrayList<>();
@@ -70,35 +67,6 @@ public class ParseController {
             ts.add(jsonObject);
         }
         obj.put("templates", ts);
-        return mqService.updateTemplates(obj.toStringPretty());
+        mqService.updateTemplates(obj.toStringPretty());
     }
-
-    /**
-    * @Description: 预留接口，提供NSGA解析日志的功能
-    * @Param:
-    * @return:
-    * @Author: Liu ZhiTian
-    * @Date: 2022/4/3
-    */
-    @RequestMapping("/provider/parseBsaeOnNSGA")
-    public String parse(){
-        return null;
-    }
-
-
-
-    @RequestMapping("/provider/parseTest")
-    public String parseTest(@RequestBody LogEntity message){
-        JSONObject obj = new JSONObject();
-        obj.put("status", 200);
-        obj.put("logEntity", message);
-        return obj.toStringPretty();
-    }
-
-
-
-
-
-
-
 }

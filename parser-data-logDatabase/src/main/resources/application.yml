@@ -11,3 +11,8 @@ spring:
     url: jdbc:mysql://localhost:3306/dolpdb?useSSL=false&serverTimezone=UTC
     username: root
     password: 2@QQz2000312
+
+rocketmq:
+  name-server: 192.168.23.131:9876
+  producer:
+    group: read-group

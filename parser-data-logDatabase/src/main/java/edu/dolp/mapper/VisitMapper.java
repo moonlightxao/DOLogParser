@@ -1,11 +1,9 @@
 package edu.dolp.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.dolp.entity.Template;
+import edu.dolp.entity.Visit;
 import org.apache.ibatis.annotations.Mapper;
 
-
 @Mapper
-public interface TemplateMapper extends BaseMapper<Template> {
+public interface VisitMapper extends BaseMapper<Visit> {
 }

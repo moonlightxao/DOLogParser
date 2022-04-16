@@ -18,8 +18,6 @@ import java.util.List;
 
 @RestController
 public class ReaderController {
-    @Resource
-    private ParserService service;
 
     @Resource
     private MQService mqService;
@@ -46,14 +44,7 @@ public class ReaderController {
                 files[i] = tmp[tmp.length - 1];
             }
         }
-        return service.parse(new LogEntity(entity.getNamespace(), files));
+        return mqService.uploadMessage(new LogEntity(entity.getNamespace(), files));
     }
-
-
-    @GetMapping("/consumer/MQTest")
-    public String test(@RequestParam("topic") String topic, @RequestParam("mes") String mes){
-        return mqService.test(topic, mes);
-    }
-
 
 }

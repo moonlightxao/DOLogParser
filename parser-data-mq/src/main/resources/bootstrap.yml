@@ -8,6 +8,6 @@ spring:
     nacos:
       server-addr: 127.0.0.1:8848
 rocketmq:
-  name-server: 192.168.23.130:9876
+  name-server: 192.168.23.131:9876
   producer:
-    group: test-group
+    group: read-group
