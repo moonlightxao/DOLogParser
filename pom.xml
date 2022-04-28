@@ -14,6 +14,7 @@
         <module>parser-common-api</module>
         <module>parser-data-logDatabase</module>
         <module>parser-data-mq</module>
+        <module>parser-provider-MoLFIParser</module>
     </modules>
     <packaging>pom</packaging>
 

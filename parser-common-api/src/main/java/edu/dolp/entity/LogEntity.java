@@ -8,13 +8,14 @@ public class LogEntity implements Serializable {
 
     private String namespace;
     private String[] logMessage;
+    private String method;
     public LogEntity(){
 
     }
 
-
-    public LogEntity(String namespace, String...logMessage){
+    public LogEntity(String namespace, String method, String...logMessage){
         this.namespace = namespace;
+        this.method = method;
         this.logMessage = logMessage;
     }
 
@@ -34,11 +35,20 @@ public class LogEntity implements Serializable {
         this.logMessage = logMessage;
     }
 
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
     @Override
     public String toString() {
         return "LogEntity{" +
                 "namespace='" + namespace + '\'' +
                 ", logMessage=" + Arrays.toString(logMessage) +
+                ", method='" + method + '\'' +
                 '}';
     }
 }

@@ -4,12 +4,12 @@ server:
 spring:
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848
+      server-addr: 110.40.213.207:8848
   application:
     name: parser-provider-logParser
 
 rocketmq:
-  name-server: 192.168.23.131:9876
+  name-server: 110.40.213.207:9876
   producer:
     group: parser-group
 

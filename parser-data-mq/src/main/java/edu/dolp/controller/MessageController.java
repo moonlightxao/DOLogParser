@@ -8,6 +8,7 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class MessageController {
@@ -29,7 +30,8 @@ public class MessageController {
         JSONObject obj = new JSONObject();
         System.out.println("准备进行异步发送");
         obj.put("status", 300);
-        rocketMQTemplate.asyncSend(uploadTopic, entity, new SendCallback() {
+        String topic = ("MoLFI".equals(entity.getMethod())) ? "MoLFI-topic" : uploadTopic;
+        rocketMQTemplate.asyncSend(topic, entity, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
                 obj.put("status", 200);

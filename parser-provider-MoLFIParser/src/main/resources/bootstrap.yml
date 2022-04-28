@@ -1,0 +1,20 @@
+server:
+  port: 9002
+
+spring:
+  cloud:
+    nacos:
+      server-addr: 110.40.213.207:8848
+  application:
+    name: parser-provider-MoLFIParser
+
+rocketmq:
+  name-server: 110.40.213.207:9876
+  producer:
+    group: parser-group
+
+logfile:
+  absolutePath: D:\\programming\\MoLFI-master\\
+  column: 0
+  pythonFilePath: D:\\programming\\MoLFI-master\\MoLFI.py
+

@@ -1,5 +1,6 @@
 package edu.dolp.controller;
 
+import cn.hutool.json.JSONObject;
 import edu.dolp.entity.FileEntity;
 import edu.dolp.entity.FileTransQueue;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +20,16 @@ public class UploadController {
     @PostMapping("/consumer/upload")
     public String upload(@RequestParam("namespace") String namespace,
                          @RequestParam("reg") String reg,
-                         @RequestParam("file") MultipartFile file){
+                          MultipartFile file){
+        JSONObject obj = new JSONObject();
         if(file.isEmpty()){
-            return "file is empty";
+            obj.put("message", "upload file, no log file uploaded");
+            obj.put("status", 400);
+            return obj.toStringPretty();
         }
+//        System.out.println(namespace);
+        if(reg.length() == 0) System.out.println(true);
+        else System.out.println(false);
         String fileName = file.getOriginalFilename();
         File dest = new File(uploadDir + fileName);
         try {
@@ -33,7 +40,9 @@ public class UploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "upload success!!";
+        obj.put("message", "upload success");
+        obj.put("status", 200);
+        return obj.toStringPretty();
     }
 
 
