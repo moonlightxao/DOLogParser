@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import edu.dolp.entity.FileEntity;
 import edu.dolp.entity.FileTransQueue;
 import edu.dolp.entity.LogEntity;
+import edu.dolp.service.DataService;
 import edu.dolp.service.MQService;
 import edu.dolp.service.ParserService;
 import edu.dolp.util.ParseUtil;
@@ -20,6 +21,9 @@ public class ReaderController {
 
     @Resource
     private MQService mqService;
+
+    @Resource
+    private DataService dataService;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -58,6 +62,28 @@ public class ReaderController {
         return obj.toStringPretty();
     }
 
+    /**
+    * @Description:  获取所有命名空间的接口
+    * @Param:
+    * @return:
+    * @Author: Liu ZhiTian
+    * @Date: 2022/4/30
+    */
+    @GetMapping("/consumer/loadNamespaces")
+    public String loadNamespaces(){
+        return dataService.loadNamespaces();
+    }
 
+    /**
+    * @Description: 根据命名空间获取日志模板信息
+    * @Param:  namespace: 命名空间
+    * @return:  templates: namespace对应的所有日志模板列表
+    * @Author: Liu ZhiTian
+    * @Date: 2022/4/30
+    */
+    @GetMapping("/consumer/getTemplatesByNamespace")
+    public String getTemplatesByNamespace(@RequestParam("namespace") String namespace, @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer size){
+        return dataService.getTemplatesByNamespace(namespace, currentPage, size);
+    }
 
 }

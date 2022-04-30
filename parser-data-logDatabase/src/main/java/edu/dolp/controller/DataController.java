@@ -6,6 +6,8 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.dolp.entity.Template;
 import edu.dolp.entity.Visit;
 import edu.dolp.mapper.TemplateMapper;
@@ -87,6 +89,47 @@ public class DataController {
         }else{
             obj.put("status", 500);
         }
+        return obj.toStringPretty();
+    }
+
+    @GetMapping("/data/loadNamespaces")
+    public String loadNamespaces(){
+        JSONObject obj = new JSONObject();
+        List<Template> namespace = templateMapper.selectList(new QueryWrapper<Template>().select("distinct namespace"));
+        int status = (namespace != null&&namespace.size() > 0) ? 200 : 500;
+        obj.put("status", status);
+        JSONArray jsonArray = new JSONArray();
+        for(Template t : namespace){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("namespace", t.getNamespace());
+            jsonArray.add(jsonObject);
+        }
+        obj.put("namespaces", jsonArray);
+        return obj.toStringPretty();
+    }
+
+    @GetMapping("/data/getTemplatesByNamespace")
+    public String getTemplatesByNamespace(@RequestParam("namespace") String namespace,
+                                          @RequestParam("currentPage") Integer currentPage,
+                                          @RequestParam("pageSize") Integer pageSize){
+        JSONObject obj = new JSONObject();
+        JSONArray array = new JSONArray();
+        Page<Template> page = new Page<>(currentPage, pageSize);
+        IPage<Template> templateIPage = templateMapper.selectPage(page, new QueryWrapper<Template>().eq("namespace", namespace));
+        if(templateIPage == null||templateIPage.getRecords().size() == 0){
+            obj.put("status", 500);
+            obj.put("message", "查询数据出现异常，请稍后再尝试");
+            return obj.toStringPretty();
+        }
+        for(Template t : templateIPage.getRecords()){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("logTemplate", t.getWords());
+            array.add(jsonObject);
+        }
+        obj.put("status", 200);
+        obj.put("totalPage", templateIPage.getPages());
+        obj.put("totalRecords", templateIPage.getTotal());
+        obj.put("templates", array);
         return obj.toStringPretty();
     }
 
