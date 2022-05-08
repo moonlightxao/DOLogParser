@@ -9,7 +9,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 100MB
+      max-file-size: 500MB
 
 file:
   upload-dir: D:\MyDownloads\javaee\DOLogParser\parser-consumer-logReader8001\src\main\resources\logs\

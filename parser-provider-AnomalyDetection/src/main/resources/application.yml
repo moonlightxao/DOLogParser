@@ -1,20 +1,18 @@
 server:
-  port: 9001
+  port: 9009
 
 spring:
   cloud:
     nacos:
       server-addr: 110.40.213.207:8848
-      config:
-        server-addr: 110.40.213.207:8848
   application:
-    name: parser-provider-logParser
+    name: parser-provider-AnomalyDetection
 
 rocketmq:
   name-server: 110.40.213.207:9876
   producer:
     group: parser-group
 
-myconfig:
-  val: false
-
+python-config:
+  module-name: LogClass-master.logclass
+  exp-id: 20220505

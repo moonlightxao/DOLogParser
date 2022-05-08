@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import edu.dolp.entity.Anomaly;
 import edu.dolp.entity.Template;
 import edu.dolp.entity.Visit;
+import edu.dolp.mapper.AnomalyMapper;
 import edu.dolp.mapper.TemplateMapper;
 import edu.dolp.mapper.VisitMapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,6 +27,9 @@ public class DataController {
 
     @Resource
     private VisitMapper visitMapper;
+
+    @Resource
+    private AnomalyMapper anomalyMapper;
 
     @GetMapping("/data/queryByNamespace")
     public String queryByNamespace(@RequestParam("namespace") String namespace){
@@ -127,9 +132,43 @@ public class DataController {
             array.add(jsonObject);
         }
         obj.put("status", 200);
-        obj.put("totalPage", templateIPage.getPages());
+        obj.put("totalPages", templateIPage.getPages());
         obj.put("totalRecords", templateIPage.getTotal());
         obj.put("templates", array);
+        return obj.toStringPretty();
+    }
+
+    /**
+    * @Description: 分页查询异常检测结果的接口
+    * @Param:  namespace: 命名空间  currentPage: 分页当前页  pageSize: 每页大小
+    * @return:  分页展示的结果
+    * @Author: Liu ZhiTian
+    * @Date: 2022/5/8
+    */
+    @RequestMapping("/data/getAnomalyByNamespace")
+    public String getAnomalyByNamespace(@RequestParam("namespace") String namespace,
+                                        @RequestParam("currentPage") Integer currentPage,
+                                        @RequestParam("pageSize") Integer pageSize){
+        JSONObject obj = new JSONObject();
+        JSONArray array = new JSONArray();
+        System.out.println("准备调用");
+        Page<Anomaly> page = new Page<>(currentPage, pageSize);
+        IPage<Anomaly> anomalyIPage = anomalyMapper.selectPage(page, new QueryWrapper<Anomaly>().eq("namespace", namespace));
+        if(anomalyIPage == null||anomalyIPage.getRecords().size() == 0){
+            System.out.println("出现异常" + (anomalyIPage == null));
+            obj.put("status", 500);
+            obj.put("message", "查询数据出现异常，请稍后再尝试");
+            return obj.toStringPretty();
+        }
+        for(Anomaly t : anomalyIPage.getRecords()){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("anomalyLabel", t.getLabel());
+            array.add(jsonObject);
+        }
+        obj.put("status", 200);
+        obj.put("totalPages", anomalyIPage.getPages());
+        obj.put("totalRecords", anomalyIPage.getTotal());
+        obj.put("anomaly", array);
         return obj.toStringPretty();
     }
 

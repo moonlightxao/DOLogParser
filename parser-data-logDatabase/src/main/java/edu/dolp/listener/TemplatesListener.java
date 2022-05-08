@@ -26,7 +26,7 @@ public class TemplatesListener implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String arg) {
-        System.out.println(arg);
+        //System.out.println(arg);
         JSONObject obj = JSONUtil.parseObj(arg);
         JSONObject result = new JSONObject();
         String namespace = obj.getStr("namespace");

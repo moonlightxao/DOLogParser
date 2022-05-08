@@ -3,6 +3,7 @@ package edu.dolp.service;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
@@ -16,4 +17,9 @@ public interface DataService {
     String getTemplatesByNamespace(@RequestParam("namespace") String namespace,
                                    @RequestParam("currentPage") Integer currentPage,
                                    @RequestParam("pageSize") Integer pageSize);
+
+    @RequestMapping("/data/getAnomalyByNamespace")
+    String getAnomalyByNamespace(@RequestParam("namespace") String namespace,
+                                        @RequestParam("currentPage") Integer currentPage,
+                                        @RequestParam("pageSize") Integer pageSize);
 }

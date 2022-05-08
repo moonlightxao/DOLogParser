@@ -15,6 +15,7 @@
         <module>parser-data-logDatabase</module>
         <module>parser-data-mq</module>
         <module>parser-provider-MoLFIParser</module>
+        <module>parser-provider-AnomalyDetection</module>
     </modules>
     <packaging>pom</packaging>
 

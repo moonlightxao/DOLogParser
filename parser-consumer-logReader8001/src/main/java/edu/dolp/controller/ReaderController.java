@@ -39,7 +39,8 @@ public class ReaderController {
         String[] files = new String[fileList.size()];
         if(entity.getReg() == null||entity.getReg().length() == 0){
             for(int i = 0;i < files.length;i++){
-                files[i] = ParseUtil.parse(fileList.get(i));
+//                files[i] = ParseUtil.parse(fileList.get(i));
+                files[i] = fileList.get(i);
             }
         }else{
             for(int i = 0;i < files.length;i++){
@@ -47,6 +48,7 @@ public class ReaderController {
                 files[i] = tmp[tmp.length - 1];
             }
         }
+        System.out.println("准备将经过预处理的日志上传至消息队列进行解析");
         return mqService.uploadMessage(new LogEntity(entity.getNamespace(), method, files));
     }
 
@@ -84,6 +86,18 @@ public class ReaderController {
     @GetMapping("/consumer/getTemplatesByNamespace")
     public String getTemplatesByNamespace(@RequestParam("namespace") String namespace, @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer size){
         return dataService.getTemplatesByNamespace(namespace, currentPage, size);
+    }
+
+    /**
+    * @Description: 根据命名空间分页获取异常检测结果
+    * @Param:
+    * @return:
+    * @Author: Liu ZhiTian
+    * @Date: 2022/5/8
+    */
+    @GetMapping("/consumer/getAnomalyByNamespace")
+    public String getAnomalyByNamespace(@RequestParam("namespace") String namespace, @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer size){
+        return dataService.getAnomalyByNamespace(namespace, currentPage, size);
     }
 
 }
